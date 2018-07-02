@@ -505,7 +505,7 @@ static int receive_test_message(struct client_info *client, int session_index)
         pack_reflect.sender_tos = fw_tos;   // Copy from the IP header packet from Sender
     }
 
-    addr.sin_port = client->sessions[session_index].req.SenderPort;
+    // addr.sin_port = client->sessions[session_index].req.SenderPort;
 
     /* FW Loss Calculation */
 
