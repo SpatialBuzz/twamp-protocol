@@ -205,7 +205,9 @@ static int receive_greet_response(struct client_info *client)
     SetUpResponse resp;
     memset(&resp, 0, sizeof(resp));
     int rv = recv(socket, &resp, sizeof(resp), 0);
-    if (rv <= 32) {
+    if (rv == 30) {
+        return -1;
+    } else if (rv <= 32) {
         fprintf(stderr, "[%s] ", str_client);
         perror("Failed to receive SetUpResponse");
         //client->mode = ntohl(0);
@@ -680,7 +682,9 @@ int main(int argc, char *argv[])
                          * ServerGreeting has been sent, wait for the
                          * SetUpResponse and finish the TWAMP-Control setup */
                         rv = receive_greet_response(&clients[i]);
-                        if (rv > 32) {
+                        if(rv == -1){
+                            break;
+                        } else if (rv > 32) {
                             rv = send_start_serv(&clients[i], StartTime);
                         } else {
                             rv = send_start_serv(&clients[i], ZeroT);
